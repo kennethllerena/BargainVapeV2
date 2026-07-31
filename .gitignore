@@ -1,0 +1,14 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Netlify local state
+.netlify/
+
+# Python bytecode from the scripts/ helpers
+__pycache__/
+*.pyc
