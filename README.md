@@ -191,7 +191,11 @@ Links open in a new tab so a buyer does not lose their place on the site.
 `css/style.css` and `js/main.js` are linked with a `?v=` number in every HTML
 file. **If you edit the CSS or JavaScript, increase that number** (e.g. `?v=2`
 → `?v=3`) in all nine HTML files, or returning visitors will keep seeing the old
-version from their browser cache. Editing text or images needs no such change.
+version from their browser cache. Editing text needs no such change.
+
+The brand mark and favicons carry the same `?v=` number, because their filenames
+never change either — and a stale favicon can sit in a browser for weeks. If you
+replace `logo-icon.webp` or any favicon, bump that number too.
 
 ### The hero video
 

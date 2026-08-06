@@ -7,9 +7,8 @@ Run this only when the source art in the "Bargain Vape" folder changes:
 Requires Pillow:  pip install pillow
 
 Product photography keeps its original white studio background — the site
-presents each shot as a rounded white tile against the dark page. Only the logo
-crops carry a black backdrop, which the stylesheet blends out with
-mix-blend-mode: screen so the neon glow survives.
+presents each shot as a rounded white tile against the dark page. The brand
+monogram is supplied with real transparency, so it needs no blending.
 """
 
 import os
@@ -81,9 +80,10 @@ def load(*parts):
 
 
 # ---------------------------------------------------------------- brand marks
-# The supplied "Logos (2).png" is the monogram on a genuinely transparent
-# background, so it drops straight onto the dark page with no blend tricks.
-mono = Image.open(os.path.join(SRC, "Logos", "Bargain Vape Logos (2).png")).convert("RGBA")
+# The monogram is supplied on a genuinely transparent background, so it drops
+# straight onto the dark page with no blend tricks. Swap the filename here to
+# change the mark everywhere: nav, footer, age gate and all three favicons.
+mono = Image.open(os.path.join(SRC, "Logos", "Little B Logo Updated.png")).convert("RGBA")
 box = mono.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox()
 if box:
     mono = mono.crop(box)
