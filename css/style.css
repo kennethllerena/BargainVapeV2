@@ -2034,6 +2034,122 @@ body.is-locked {
 }
 
 /* ==========================================================================
+   COAs — certificate index
+   A document list, so it is built for scanning: name, strain, link, repeat.
+   ========================================================================== */
+
+/* Visible only to screen readers — carries the "opens in a new tab" warning
+   without cluttering the button for sighted users. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.coa-group {
+  margin-bottom: var(--space-5);
+}
+
+.coa-group__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+.coa-group__box {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.coa-list {
+  display: grid;
+}
+
+.coa-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.coa-row__name {
+  font-weight: 650;
+  font-size: 1.02rem;
+  color: var(--fg);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Pushed to the end of the row so every link lines up in one column. */
+.coa-row__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--fg);
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.coa-row__link:hover {
+  background: color-mix(in srgb, var(--accent) 26%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  transform: translateY(-1px);
+}
+
+.coa-row__ext {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  opacity: 0.75;
+}
+
+@media (max-width: 480px) {
+  .coa-row {
+    align-items: flex-start;
+  }
+
+  /* Name and badge on one line, link full width beneath — at this width the
+     three-across row squeezes the flavour name to a couple of characters. */
+  .coa-row__link {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.15rem;
+  }
+}
+
+/* ==========================================================================
    Legal pages (Terms, Privacy)
    Long-form reading: a narrow measure, generous leading, and headings that
    step down clearly so the document can be scanned.

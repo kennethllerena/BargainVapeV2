@@ -111,7 +111,7 @@ for size, name in [(32, "favicon-32.png"), (180, "apple-touch-icon.png"), (512, 
 
 # ------------------------------------------------------------- display cases
 CASES = {
-    "case-greenpurple": "Green and purple box front top view.png",
+    "case-greenpurple": "Green Purple Box Updated.png",
     "case-orangegreen": "OrangeGreen box.png",
     "case-pinkblue": "PinkBlue box.png",
 }

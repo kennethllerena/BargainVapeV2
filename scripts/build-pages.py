@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-"""Generate the legal pages from the shared site shell.
+"""Generate the text-only pages from the shared site shell.
 
-Terms and Privacy reuse contact.html's head, age gate, nav and footer so they
-never drift from the rest of the site. Only the <main> block differs. Re-run
-after changing the shell:
+Terms, Privacy, Accessibility and COAs reuse contact.html's head, age gate, nav
+and footer so they never drift from the rest of the site. Only the <main> block
+differs. Re-run after changing the shell (nav, footer, age gate):
 
-    python scripts/build-legal.py
+    python scripts/build-pages.py
+
+Edit the copy in THIS FILE, not in the generated .html — regenerating overwrites
+them.
 """
 
 import io
@@ -27,7 +30,7 @@ def shell():
     return "\n".join(lines[:i_main]), "\n".join(lines[i_end:])
 
 
-def page(slug, title, desc, eyebrow, h1_lines, body):
+def page(slug, title, desc, eyebrow, h1_lines, body, subline=None):
     head, tail = shell()
 
     lines_html = "\n".join(
@@ -44,7 +47,7 @@ def page(slug, title, desc, eyebrow, h1_lines, body):
     <h1 class="page-head__title" style="margin-bottom:var(--space-3)">
 %s
     </h1>
-    <p class="lede" data-hero-fade>Last updated %s</p>
+    <p class="lede" data-hero-fade>%s</p>
   </div>
 </section>
 
@@ -56,7 +59,7 @@ def page(slug, title, desc, eyebrow, h1_lines, body):
   </div>
 </section>
 
-''' % (eyebrow, lines_html, EFFECTIVE, body)
+''' % (eyebrow, lines_html, subline or ("Last updated " + EFFECTIVE), body)
 
     out = head + "\n" + main + tail
     out = out.replace("<title>Wholesale Inquiry — Bargain Vape</title>",
@@ -344,3 +347,73 @@ page("terms.html", "Terms of Service",
 page("privacy.html", "Privacy Policy",
      "Privacy Policy for the Bargain Vape website. What we collect through the wholesale inquiry form, why, and your choices.",
      "Legal", ["Privacy", "Policy."], PRIVACY)
+
+
+# ---------------------------------------------------------------------- COAs
+# Certificate of Analysis for each flavour, hosted on Google Drive.
+# To swap a document: replace the file id (the long string between /d/ and
+# /view) with the id from the new Drive link, then re-run this script.
+#
+# IMPORTANT: each Drive file must be shared as "Anyone with the link — Viewer".
+# If it is left restricted, retailers hit a permission wall instead of the PDF.
+COAS = [
+    ("Display Box One", "Pink &amp; Blue", "pink", [
+        ("Pink Lemonade", "Sativa", "1YdM6Jcj4TCxpM089S6uvEQiWBCyFbBc3"),
+        ("Gelato",        "Hybrid", "13GjDhOn_VyXTtoPP5HuYVITbncT-gTKk"),
+        ("Berry Punch",   "Indica", "14XIE8tvcnWb5oy8Bbb9aIe8xcYCn0JYv"),
+    ]),
+    ("Display Box Two", "Orange &amp; Green", "orange", [
+        ("Tropical Sunrise", "Sativa", "1pbiHbutuLnf5T9rdjtqhfSJvqMFgSMQe"),
+        ("Mimosa",           "Hybrid", "1d24kKIMHrjRur5jrBtWpPxaPIHtakrNi"),
+        ("Slurricane",       "Indica", "1xvJaQQPCvYk1sCqKsmEcT7Bu3hBwRr96"),
+    ]),
+    ("Display Box Three", "Green &amp; Purple", "lime", [
+        ("Green Crack",  "Sativa", "1dShqT-dKqoPYbAvugY4aDLb8bs1EkPbr"),
+        ("Jokerz Candy", "Hybrid", "112Vn4ncfmfOiFjQLOoIRWbhvzIkox7Ie"),
+        ("Purple Urkle", "Indica", "1051mJJgpAj0W2jj1omKxkXqCObUck5Sz"),
+    ]),
+]
+
+DRIVE = "https://drive.google.com/file/d/%s/view"
+
+EXT_ICON = ('<svg class="coa-row__ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>'
+            '<path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>')
+
+
+def coa_body():
+    out = []
+    out.append('      <p class="lede" style="margin-bottom:var(--space-5)">\n'
+               '        Every flavour is third-party lab tested. Each certificate opens as a PDF in\n'
+               '        Google Drive — download or forward it to whoever needs it.\n'
+               '      </p>\n')
+    for box, colour_name, accent, flavours in COAS:
+        out.append('      <section class="coa-group" style="--accent: var(--%s)">\n' % accent)
+        out.append('        <h2 class="coa-group__title">%s '
+                   '<span class="coa-group__box">%s Box</span></h2>\n' % (box, colour_name))
+        out.append('        <ul class="coa-list">\n')
+        for name, strain, fid in flavours:
+            out.append(
+                '          <li class="coa-row">\n'
+                '            <span class="coa-row__name">%s</span>\n'
+                '            <span class="strain-badge strain-badge--%s">%s</span>\n'
+                '            <a class="coa-row__link" href="%s" target="_blank" rel="noopener noreferrer">\n'
+                '              View COA%s\n'
+                '              <span class="sr-only"> for %s (opens in a new tab)</span>\n'
+                '            </a>\n'
+                '          </li>\n'
+                % (name, strain.lower(), strain, DRIVE % fid, EXT_ICON, name))
+        out.append('        </ul>\n')
+        out.append('      </section>\n\n')
+    out.append('      <p class="body-muted" style="font-size:.9rem;margin-top:var(--space-4)">\n'
+               '        Need a certificate for a batch not listed here, or a copy sent directly?\n'
+               '        Email <a href="mailto:%s" style="color:var(--cyan)">%s</a>.\n'
+               '      </p>' % (EMAIL, EMAIL))
+    return "".join(out)
+
+
+page("coas.html", "COAs",
+     "Certificates of Analysis for every Bargain Vape flavour. Third-party lab results for all nine hemp-derived THC disposables.",
+     "Lab Results", ["Certificates", "of analysis."], coa_body(),
+     subline="Third-party lab results for all nine flavours.")
