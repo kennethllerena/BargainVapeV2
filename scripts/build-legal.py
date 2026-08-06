@@ -69,6 +69,8 @@ def page(slug, title, desc, eyebrow, h1_lines, body):
                  '<meta property="og:url" content="https://%s/%s">' % (DOMAIN, slug), out, count=1)
     out = re.sub(r'<meta property="og:title" content="[^"]*">',
                  '<meta property="og:title" content="%s — Bargain Vape">' % title, out, count=1)
+    out = re.sub(r'<meta property="og:description" content="[^"]*">',
+                 '<meta property="og:description" content="%s">' % desc, out, count=1)
     out = out.replace(' aria-current="page"', '')
     out = out.replace('href="#wholesale-form"', 'href="contact.html"')
 
@@ -78,13 +80,7 @@ def page(slug, title, desc, eyebrow, h1_lines, body):
 
 # --------------------------------------------------------------------- TERMS
 
-TERMS = '''      <p class="legal__note" role="note">
-        <strong>Template for review.</strong> This page was drafted as a starting point and has not
-        been reviewed by an attorney. Hemp-derived THC is regulated differently in every state.
-        Have counsel review this before relying on it.
-      </p>
-
-      <h2>1. Who we are</h2>
+TERMS = '''      <h2>1. Who we are</h2>
       <p>
         This website is operated by Bargain Vape ("Bargain Vape", "we", "us", "our"). By accessing
         or using the site you agree to these Terms of Service. If you do not agree, please do not
@@ -104,7 +100,7 @@ TERMS = '''      <p class="legal__note" role="note">
       <p>
         Bargain Vape sells to retail businesses only. This website does not sell products, take
         payment, or fulfil consumer orders. Nothing on this site is an offer to sell to consumers.
-        Product images, descriptions, case configurations and the price printed on packaging are
+        Product images, descriptions, display box configurations and the price printed on packaging are
         provided for informational purposes and may change without notice.
       </p>
       <p>
@@ -199,13 +195,7 @@ TERMS = '''      <p class="legal__note" role="note">
 
 # ------------------------------------------------------------------- PRIVACY
 
-PRIVACY = '''      <p class="legal__note" role="note">
-        <strong>Template for review.</strong> This page was drafted as a starting point and has not
-        been reviewed by an attorney. If you begin collecting more data, or sell into states with
-        their own privacy statutes, have counsel review it.
-      </p>
-
-      <h2>1. Overview</h2>
+PRIVACY = '''      <h2>1. Overview</h2>
       <p>
         This policy explains what information Bargain Vape collects through
         <span class="nowrap">%s</span>, why we collect it, and what we do with it. We have
@@ -216,7 +206,7 @@ PRIVACY = '''      <p class="legal__note" role="note">
       <h3>Information you give us</h3>
       <p>
         If you submit a wholesale inquiry, we collect what you type into that form: your business
-        name, contact name, email address, phone number, city and state, business type, the case
+        name, contact name, email address, phone number, city and state, business type, the display box
         quantities you are interested in, and any message you write. We ask for this only so we can
         respond to your inquiry.
       </p>
@@ -295,13 +285,7 @@ PRIVACY = '''      <p class="legal__note" role="note">
       </p>''' % (DOMAIN, EMAIL, EMAIL, EMAIL, EMAIL)
 
 
-ACCESSIBILITY = '''      <p class="legal__note" role="note">
-        <strong>Template for review.</strong> This statement describes how the site was built. If
-        you make substantial changes, or if someone reports a barrier, update it so it stays
-        accurate — a statement that no longer matches the site is worse than none.
-      </p>
-
-      <h2>Our commitment</h2>
+ACCESSIBILITY = '''      <h2>Our commitment</h2>
       <p>
         We want this site to be usable by everyone, including people who browse with a screen
         reader, navigate by keyboard, enlarge text, or prefer reduced motion. We aim to meet the
